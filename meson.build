@@ -9,6 +9,7 @@ test_cases = {
     'unmatched_[': {'input': '', 'expected': ''},
     'unmatched_]': {'input': '', 'expected': ''},
     'rot13': {'input': '~mlk zyx', 'expected': '~zyx mlk'},
+    'array_lbound': {'input': '', 'expected': ''},
 }
 
 foreach name, data : test_cases
