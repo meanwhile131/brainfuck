@@ -1,0 +1,25 @@
+name: Build
+on:
+    push:
+        branches: [main]
+    pull_request:
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        env:
+            INSTALL_PREFIX: /tmp/install
+        steps:
+          - uses: actions/checkout@v6
+          - run: python -m pip install meson
+          - run: meson setup -Dprefix=$INSTALL_PREFIX --buildtype release builddir
+          - run: |
+                cd builddir
+                meson compile
+                meson test
+                meson install
+          - id: version
+            run: echo "hash=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          - uses: actions/upload-artifact@v4
+            with:
+                name: ${{ github.event.repository.name }}_${{ steps.version.outputs.hash }}
+                path: ${{ env.INSTALL_PREFIX }}
