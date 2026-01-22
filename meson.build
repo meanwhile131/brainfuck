@@ -1,5 +1,5 @@
 project('brainfuck', 'c')
-executable('interpreter', 'interpreter.c')
+executable('bf-interpreter', 'interpreter.c', install: true)
 
 test_cases = {
     'hello_world': {'input': '', 'expected': 'Hello World!\n'},
