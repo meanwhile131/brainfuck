@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
+#include <errno.h>
 
 #define MAX_CODE_SIZE 65536
 
@@ -16,14 +17,16 @@ int main(int argc, char *argv[])
     file = fopen(filename, "r");
     if (file == NULL)
     {
-        fprintf(stderr, "Failed to open %s\n", filename);
+        int error = errno;
+        fprintf(stderr, "Failed to open %s: %s\n", filename, strerror(error));
         return 1;
     }
     char code[MAX_CODE_SIZE];
     uint16_t code_len = fread(code, sizeof(char), MAX_CODE_SIZE, file);
     if (ferror(file)) {
         fclose(file);
-        fprintf(stderr, "Failed reading source file\n");
+        int error = errno;
+        fprintf(stderr, "Failed reading %s: %s\n", filename, strerror(error));
         return 1;
     }
     fclose(file);
